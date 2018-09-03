@@ -1,0 +1,31 @@
+.identify-card {
+  position: absolute;
+  z-index: 1;
+  align-items: center;
+  display: none;
+}
+
+.identify-close {
+  border-radius: 100%;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  flex-direction: column;
+}
+
+.identify-selector {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.isDisabled {
+  color: black;
+  cursor: not-allowed;
+  opacity: 0.5;
+  text-decoration: none;
+}
