@@ -10,7 +10,7 @@ return (
     className="ag-theme-balham"
     style={{
     height: '500px',
-    width: '300px' }}
+    width: '300px'}}
   >
       <AgGridReact
           enableSorting={true}
@@ -19,7 +19,8 @@ return (
           className="ag-theme-balham"
           style={{
           height: '100px',
-          width: '300px' }} >
+          width: '300px'
+           }} >
       </AgGridReact>
   </div>
 )

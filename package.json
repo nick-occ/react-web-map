@@ -20,6 +20,7 @@
     "esri-loader": "^1.6.0",
     "esri-loader-react": "^2.0.3",
     "jquery": "^3.3.1",
+    "jquery-ui": "^1.12.1",
     "jsonwebtoken": "^8.3.0",
     "live-server": "^1.2.0",
     "node-sass": "^4.9.3",

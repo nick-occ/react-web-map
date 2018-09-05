@@ -33,7 +33,6 @@ const  IdentifyCard = (props) => {
   return (
   <div className='identify-card'>
         <div className='card'>
-              <button className='btn btn-sm btn-primary col-sm-2 offset-sm-11 identify-close' onClick={handleClose}>X</button>
               <h3 className='card-title'>{props.identifyLayer}</h3>
               <div className='identify-selector'>
                 <button className='btn btn-sm btn-primary id-rec-selector' id='prev-rec-selector' onClick={handleClick}>&lt;</button>

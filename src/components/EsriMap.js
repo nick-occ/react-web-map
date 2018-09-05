@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import jwt from 'jsonwebtoken';
-import $ from 'jquery';
+// import $ from 'jquery';
 
 import EsriLoaderReact from 'esri-loader-react';
 import IdentifyCard from './IdentifyCard';
@@ -51,6 +51,12 @@ export class EsriMap extends Component {
         idTask.execute(idParams).then(function(res) {
             console.log('results', res);
             if (res.results.length > 0) {
+                $("#dialog").dialog({
+                    title: 'Identify',
+                    width: '21.5rem',
+                    height: '650'
+                });
+
                 $('.identify-card').css('display','block');
                 props.setMapProps({
                     idCurRec: 0,
@@ -76,15 +82,17 @@ export class EsriMap extends Component {
 
         return (
             <div>
-            <IdentifyCard
-                key='identifyCard'
-                columnDefs={columnDefs}
-                currentRecord={this.props.map.idCurRec}
-                totalRecords={this.props.map.idTotalRec}
-                rowData={this.props.map.idData}
-                identifyLayer={this.props.map.idLayer}
-                getRec = {this.getRec}
-              />
+            <div id="dialog" title="Basic dialog">
+                <IdentifyCard
+                    key='identifyCard'
+                    columnDefs={columnDefs}
+                    currentRecord={this.props.map.idCurRec}
+                    totalRecords={this.props.map.idTotalRec}
+                    rowData={this.props.map.idData}
+                    identifyLayer={this.props.map.idLayer}
+                    getRec = {this.getRec}
+                />
+            </div>
             <EsriLoaderReact
                 className='esri-map'
                 options={options}
