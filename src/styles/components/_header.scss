@@ -3,3 +3,12 @@
     color: $white;
     padding-left: 1em;
 }
+
+.header__items {
+    display: flex;
+    flex-direction: row;
+    align-content: space-around;
+    align-items: center;
+    justify-content: space-around;
+    flex: 1;
+}
