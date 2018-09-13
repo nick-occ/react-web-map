@@ -2,12 +2,10 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import jwt from 'jsonwebtoken';
-// import $ from 'jquery';
 
 import EsriLoaderReact from 'esri-loader-react';
 import IdentifyCard from './IdentifyCard';
 import { setMapProps } from '../actions/map';
-import config from '../../config/mapConfig.json';
 
 export class EsriMap extends Component {
     
@@ -69,6 +67,10 @@ export class EsriMap extends Component {
         }).catch((err) => console.log(err));
     }
 
+    loadMap() {
+
+    }
+
     render() {
     
         const options = {
@@ -113,49 +115,55 @@ export class EsriMap extends Component {
                   IdentifyParameters
                 ], containerNode}) => {
 
-                    axios.post('http://localhost:3000/token',{
-                        username: jwt.sign(config.username, config.token_secret),
-                        password: jwt.sign(config.password, config.token_secret)
-                    })
-                    .then((response) => {
-                        let map = new Map({basemap: config.basemap});
-                        let mapView = new MapView({
-                            container: containerNode,
-                            map,
-                            center: config.center,
-                            zoom: config.zoom
-                        });
+                    axios.get('http://localhost:3000/config').then((res) => {
+                        getToken(res.data.config);
+                    }).catch((err) => console.log(err));
 
-                        let identifyTask = new IdentifyTask(`${config.mapUrl}/${config.mapService}`);
-                        let identifyParams = new IdentifyParameters({
-                          tolerance: 3,
-                          layerOption: "top",
-                          width: mapView.width,
-                          height: mapView.height
-                        });
+                    const getToken = (data) => {
+                        axios.post('http://localhost:3000/token',{
+                            username: jwt.sign(process.env.ARCGIS_USER, process.env.ARCGIS_SECRET),
+                            password: jwt.sign(process.env.ARCGIS_PASS, process.env.ARCGIS_SECRET)
+                        }).then((response) => {
+                            let map = new Map({basemap: data.basemap});
+                            let mapView = new MapView({
+                                container: containerNode,
+                                map,
+                                center: data.center,
+                                zoom: data.zoom
+                            });
 
-                        IdentityManager.registerToken({
-                            token: jwt.verify(response.data.token, config.token_secret),
-                            server: config.mapUrl
-                        });
+                            let identifyTask = new IdentifyTask(`${data.mapUrl}/${data.mapService}`);
+                            let identifyParams = new IdentifyParameters({
+                            tolerance: 3,
+                            layerOption: "top",
+                            width: mapView.width,
+                            height: mapView.height
+                            });
 
-                        let layer = new MapImageLayer({
-                            url: `${config.mapUrl}/${config.mapService}`
-                        });
+                            IdentityManager.registerToken({
+                                token: jwt.verify(response.data.token, process.env.ARCGIS_SECRET),
+                                server: data.mapUrl
+                            });
 
-                        map.add(layer);
+                            let layer = new MapImageLayer({
+                                url: `${data.mapUrl}/${data.mapService}`
+                            });
 
-                        mapView.on('click', this.handleIdentify);
+                            map.add(layer);
 
-                        this.props.setMapProps({
-                            name: 'Test Map',
-                            idTask: identifyTask,
-                            idParams: identifyParams,
-                            mapView
-                        });
-                    })
-                    .catch((err) => console.log(err));
-                }}
+                            mapView.on('click', this.handleIdentify);
+
+                            this.props.setMapProps({
+                                name: 'Test Map',
+                                idTask: identifyTask,
+                                idParams: identifyParams,
+                                mapView
+                            });
+                        })
+                        .catch((err) => console.log(err));
+                        }
+                    }
+                }
             >
             </EsriLoaderReact>
             </div>
