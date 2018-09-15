@@ -67,10 +67,6 @@ export class EsriMap extends Component {
         }).catch((err) => console.log(err));
     }
 
-    loadMap() {
-
-    }
-
     render() {
     
         const options = {
@@ -154,9 +150,10 @@ export class EsriMap extends Component {
                             mapView.on('click', this.handleIdentify);
 
                             this.props.setMapProps({
-                                name: 'Test Map',
+                                name: data.name,
                                 idTask: identifyTask,
                                 idParams: identifyParams,
+                                center: data.center,
                                 mapView
                             });
                         })
