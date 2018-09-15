@@ -5,23 +5,19 @@ import Location from './Location';
 const Locations = (props) => (
   <div>
     <div className="location-header">
-      <h3 className="location-header__heading">Locations</h3>
-
-      {props.locations.length === 0 &&
-          <p className='location_message'>No locations found</p>}
-
+      <h3 className="location-header__heading">Results</h3>
       {
-        props.locations.map((location, index) => (
+        props.businesses.map((business, index) => (
           <Location
-            key={location.name}
-            locationText={location.name}
-            locationImage={location.image}
-            locationDescription={location.description}
+            key={business.name}
+            data={business}
           />)
         )
-      }
+      } 
     </div>
   </div>
 );
 
+
+  
 export default Locations;

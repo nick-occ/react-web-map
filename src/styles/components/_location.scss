@@ -1,33 +1,71 @@
+// .location {
+//     border-style: solid;
+//     border-width: thin;
+//     display: flex;
+//     margin: 1rem;
+//     background-color: white;
+//     flex-wrap: wrap;
+// }
+
+// .location__header {
+//   display: flex;
+//   flex-direction: row;
+//   justify-content: space-between;
+//   align-items: center;
+//   margin: 1rem;
+//   width: 100%;
+// }
+
+// .location__header > img {
+//   flex: 3
+// }
+
+
+// .location__header > h3 {
+//   flex: 7;
+//   color: red;
+//   justify-content: center;
+// }
+
+
+// .location__description {
+//   flex: 1;
+// }
+
 .location {
-    border-style: solid;
-    border-width: thin;
-    display: flex;
-    margin: 1rem;
-    background-color: white;
-    flex-wrap: wrap;
+  border-style: solid;
+  border-width: thin;
+  margin-bottom: 1rem;
+}
+
+.location img {
+  border-radius: 50%;
+}
+
+.location a {
+  text-decoration: none;
 }
 
 .location__header {
+  align-items: center;
+}
+
+.location__header h6 {
+  font-weight: bold;
+}
+
+.location__body {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  align-items: center;
-  margin: 1rem;
-  width: 100%;
 }
 
-.location__header > img {
-  flex: 3
+.location__body p {
+  text-align: center;
+  margin-bottom: 0;
+  font-size: 12px; 
 }
 
-
-.location__header > h3 {
-  flex: 7;
-  color: red;
-  justify-content: center;
-}
-
-
-.location__description {
-  flex: 1;
+#price {
+  color: $green;
 }

@@ -5,7 +5,7 @@ html, body, #app {
 }
 
 .container {
-  height: 100%;
+  height: 94%;
   position: fixed;
   display: flex;
   flex-direction: row;
@@ -26,14 +26,6 @@ html, body, #app {
   flex-direction: column;
   flex: 5;
 
-}
-
-.side-panel-section {
-  background-color: green;
-  text-align: center;
-  padding: 0 1rem 0 1rem;
-  min-width: 25%;
-  max-width: 40%;
 }
 
 .esri-map {

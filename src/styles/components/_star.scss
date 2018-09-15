@@ -1,0 +1,21 @@
+.star {
+    fill: $gold;
+    fill-rule:nonzero;
+}
+
+.star svg {
+    background-color: red;
+}
+
+.star polygon {
+    stroke: none;
+    
+}
+
+.full {
+    fill: $gold;
+}
+
+.empty {
+    fill: white;
+}
