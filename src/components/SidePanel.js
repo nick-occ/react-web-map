@@ -71,11 +71,11 @@ export class SidePanel extends Component{
   }
 
   render() {
-    if (this.props.map.searchResults) {
-      return this.props.map.searchResults.length > 0 
+    if (this.state.businesses) {
+      return this.state.businesses.length > 0 
       ? 
       <div className='side-panel-section'>
-        <Locations businesses={this.props.map.searchResults} />
+        <Locations businesses={this.state.businesses} />
       </div> 
       : null
     } else {

@@ -28,7 +28,6 @@ export class HeaderItem extends Component {
                 this.props.setMapProps({
                     searchResults: res.data.businesses
                 });
-                console.log(res);
             }).catch((e) => {
                 console.log(e);
             })

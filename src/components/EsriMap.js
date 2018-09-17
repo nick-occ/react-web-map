@@ -96,19 +96,25 @@ export class EsriMap extends Component {
                 options={options}
                 modulesToLoad={[
                     'esri/Map',
+                    'esri/Graphic',
                     'esri/views/MapView',
                     'esri/layers/MapImageLayer',
+                    "esri/layers/GraphicsLayer",
                     'esri/identity/IdentityManager',
                     'esri/tasks/IdentifyTask',
-                    'esri/tasks/support/IdentifyParameters'
+                    'esri/tasks/support/IdentifyParameters',
+                    'esri/core/watchUtils'
                   ]}
                 onReady={({loadedModules: [
                   Map,
+                  Graphic,
                   MapView,
                   MapImageLayer,
+                  GraphicsLayer,
                   IdentityManager,
                   IdentifyTask,
-                  IdentifyParameters
+                  IdentifyParameters,
+                  watchUtils
                 ], containerNode}) => {
 
                     axios.get('http://localhost:3000/config').then((res) => {
@@ -145,15 +151,31 @@ export class EsriMap extends Component {
                                 url: `${data.mapUrl}/${data.mapService}`
                             });
 
+                            let graphicsLayer = new GraphicsLayer();
+                            let selectedGraphic = new GraphicsLayer();
+
                             map.add(layer);
+                            map.add(graphicsLayer);
+                            map.add(selectedGraphic)
 
                             mapView.on('click', this.handleIdentify);
+
+                            watchUtils.whenTrue(mapView, "stationary", () => {
+                                if (mapView.center) {
+                                    this.props.setMapProps({
+                                        center: [mapView.center.longitude, mapView.center.latitude]
+                                    })
+                                }
+                            });
 
                             this.props.setMapProps({
                                 name: data.name,
                                 idTask: identifyTask,
                                 idParams: identifyParams,
                                 center: data.center,
+                                graphic: new Graphic(),
+                                graphicsLayer,
+                                selectedGraphic,
                                 mapView
                             });
                         })
