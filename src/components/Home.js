@@ -15,9 +15,9 @@ class Home extends React.Component {
       return (
         <div>
           <Header title={title} />
-          <div className='container'>
-            <SidePanel />
-            <EsriMap className='esri-map' />
+          <div id='frame'>
+            <SidePanel id='side-panel' />
+            <EsriMap id='esri-frame'/>
           </div>
       </div>
       );

@@ -79,7 +79,7 @@ export class EsriMap extends Component {
             ];
 
         return (
-            <div>
+            <div id="esri-map">
             <div id="dialog" title="Basic dialog">
                 <IdentifyCard
                     key='identifyCard'
@@ -92,7 +92,6 @@ export class EsriMap extends Component {
                 />
             </div>
             <EsriLoaderReact
-                className='esri-map'
                 options={options}
                 modulesToLoad={[
                     'esri/Map',
@@ -128,7 +127,7 @@ export class EsriMap extends Component {
                         }).then((response) => {
                             let map = new Map({basemap: data.basemap});
                             let mapView = new MapView({
-                                container: containerNode,
+                                container: 'esri-map',
                                 map,
                                 center: data.center,
                                 zoom: data.zoom

@@ -14,3 +14,21 @@ html, body, #app {
   justify-content: flex-start;
   padding: 0;
 }
+
+#frame {
+  display: flex;
+  flex-direction: row;
+  height: 94vh;
+}
+
+#esri-map {
+  flex: 2;
+  order: 2;
+}
+
+
+
+#side-panel {
+  flex: 1;
+  order: 1;
+}

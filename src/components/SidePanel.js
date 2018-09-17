@@ -7,6 +7,7 @@ export class SidePanel extends Component{
   state = {
     businesses: [
       {
+        id: 1,
         name: 'Twenty-Six Acres Brewing',
         coordinates: {
           latitude: 35.388337119113, 
@@ -26,6 +27,7 @@ export class SidePanel extends Component{
         image_url: "https://s3-media3.fl.yelpcdn.com/bphoto/DEJELsPv-gscsC4ojnj9ow/o.jpg"
       }, 
       {
+        id: 2,
         name: 'Divine Barrel Brewing',
         coordinates: {
           latitude: 35.2503794230232, 
@@ -45,6 +47,7 @@ export class SidePanel extends Component{
         image_url: "https://s3-media2.fl.yelpcdn.com/bphoto/4VX9wjRy-QhYs8RseJvflA/o.jpg"
       },
       {
+        id: 3,
         name: 'NoDa Brewing Company',
         coordinates: {
           latitude: 35.251678,
@@ -71,11 +74,11 @@ export class SidePanel extends Component{
   }
 
   render() {
-    if (this.state.businesses) {
-      return this.state.businesses.length > 0 
+    if (this.props.map.searchResults) {
+      return this.props.map.searchResults.length > 0 
       ? 
       <div className='side-panel-section'>
-        <Locations businesses={this.state.businesses} />
+        <Locations businesses={this.props.map.searchResults} />
       </div> 
       : null
     } else {
