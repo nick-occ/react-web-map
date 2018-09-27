@@ -23,7 +23,7 @@ const renderApp = () => {
     ReactDOM.render(jsx, document.getElementById('app'));
     hasRendered = true;
   }
-}
+};
 
 renderApp();
 

@@ -26,3 +26,5 @@ yarn.lock
 
 /dist
 
+# idea
+.idea

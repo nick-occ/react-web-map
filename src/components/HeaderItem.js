@@ -19,7 +19,8 @@ export class HeaderItem extends Component {
      }
 
     handleKeyPress(e) {
-        if (e.charCode == 13) {
+        if (e.charCode === 13) {
+            //make request to search service
             axios.post('http://localhost:3000/search', {
                 term: $('#search-input').val(),
                 longitude: this.props.map.center[0],
@@ -35,17 +36,18 @@ export class HeaderItem extends Component {
     }
 
     render() {
+        //render header elements based on type
         switch (this.props.item.type) {
             case 'toggle':
-                return <button className='btn btn-primary' data-toggle="button" aria-pressed="false" autoComplete="off">{this.props.item.name}</button>
+                return <button className='btn btn-primary' data-toggle="button" aria-pressed="false" autoComplete="off">{this.props.item.name}</button>;
             case 'search':
-                return <input ref={this.textInput} id="search-input" onKeyPress={this.handleKeyPress} type="text" className="form" placeholder="Find something"></input>
+                return <input ref={this.textInput} id="search-input" onKeyPress={this.handleKeyPress} type="text" className="form" placeholder="Find something" />;
             default:
                 return <a className="nav-link active" href="#">{this.props.item.name}</a>
                 
         }
     }
-};
+}
 
 const mapDispatchToProps = (dispatch) => {
     return {

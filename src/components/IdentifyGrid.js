@@ -1,11 +1,10 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid/dist/styles/ag-grid.css';
 import 'ag-grid/dist/styles/ag-theme-balham.css';
 
-const IdentifyGrid = (props) => {
-return (
-
+//render identify grid of with row data
+const IdentifyGrid = (props) => (
   <div
     className="ag-theme-balham"
     style={{
@@ -23,8 +22,6 @@ return (
            }} >
       </AgGridReact>
   </div>
-)
-}
-
+);
 
 export default IdentifyGrid;

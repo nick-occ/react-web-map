@@ -1,7 +1,7 @@
 import React from 'react';
 
 const Star = (props) => {
-    // console.log(props.index, props.rating, Math.ceil(props.rating));
+    //draw star polygons
     let {fillStar} = props;
     return (
         <div className='star'>
@@ -13,6 +13,6 @@ const Star = (props) => {
             </svg>
         </div>
     )
-}
+};
 
 export default Star;

@@ -4,12 +4,11 @@
 }
 
 .star svg {
-    background-color: red;
+    background-color: $red;
 }
 
 .star polygon {
     stroke: none;
-    
 }
 
 .full {
@@ -17,5 +16,5 @@
 }
 
 .empty {
-    fill: white;
+    fill: $white;
 }

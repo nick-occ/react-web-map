@@ -13,13 +13,13 @@ class Home extends React.Component {
     render() {
       const title = 'Map';
       return (
-        <div>
-          <Header title={title} />
-          <div id='frame'>
-            <SidePanel id='side-panel' />
-            <EsriMap id='esri-frame'/>
+          <div id='main-frame'>
+              <Header title={title}/>
+              <div id={'map-frame'}>
+                  <EsriMap/>
+                  <SidePanel/>
+              </div>
           </div>
-      </div>
       );
     }
   }

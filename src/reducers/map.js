@@ -12,7 +12,7 @@ const mapReducerDefaultState = {
 export default (state = mapReducerDefaultState, action) => {
   switch (action.type) {
     case 'SET_MAP_PROPS':
-      return {...state, ...action.map}
+      return {...state, ...action.map};
     default:
       return state
   }

@@ -1,23 +1,14 @@
 .location {
-  border-style: solid;
-  border-width: thin;
+  border: thin solid;
   margin-bottom: 1rem;
-}
-
-.location img {
-  border-radius: 50%;
 }
 
 .location a {
   text-decoration: none;
 }
 
-.location__header {
-  align-items: center;
-}
-
-.location__header h6 {
-  font-weight: bold;
+.location img {
+  border-radius: 50%;
 }
 
 .location__body {
@@ -29,7 +20,15 @@
 .location__body p {
   text-align: center;
   margin-bottom: 0;
-  font-size: 12px; 
+  font-size: 12px;
+}
+
+.location__header {
+  align-items: center;
+}
+
+.location__header h6 {
+  font-weight: bold;
 }
 
 #price {

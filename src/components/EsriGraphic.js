@@ -2,6 +2,7 @@ import React, { Component }from 'react';
 import { connect } from 'react-redux';
 import EsriLoaderReact from 'esri-loader-react';
 
+//create a graphic and draw it on the map
 export class EsriGraphic extends Component {
 
     constructor() {
@@ -14,7 +15,6 @@ export class EsriGraphic extends Component {
         };
         return (
         <EsriLoaderReact
-        className='esri-map'
         options={options}
         modulesToLoad={[
             'esri/Graphic',
@@ -24,19 +24,23 @@ export class EsriGraphic extends Component {
         Graphic,
         PopupTemplate
         ], containerNode}) => {
-            var point = {
-            type: "point",
-            longitude: this.props.coordinates.longitude,
-            latitude: this.props.coordinates.latitude
+            //point geometry
+            const point = {
+                type: "point",
+                longitude: this.props.coordinates.longitude,
+                latitude: this.props.coordinates.latitude
             };
-        
-            var markerSymbol = {
-            type: "simple-marker",
-            color: this.props.rgb
+
+            //marker symbol
+            const markerSymbol = {
+                type: "simple-marker",
+                color: this.props.rgb
             };
-    
-            var attributes = this.props.data
-        
+
+            //attributes of feature
+            const attributes = this.props.data;
+
+            //draw graphic
             this.props.map.graphic = new Graphic({
             geometry: point,
             symbol: markerSymbol,
@@ -47,6 +51,7 @@ export class EsriGraphic extends Component {
                 })
             });
 
+            //add to graphics layer
             this.props.map.graphicsLayer.add(this.props.map.graphic);
         }}
         >

@@ -16,6 +16,7 @@ export class EsriMap extends Component {
         this.getRec = this.getRec.bind(this);
     };
 
+    //get record based on button clicked in identify
     getRec(dir='next') {
         let {idCurRec, idTotalRec, idResults} = this.props.map;
         if (dir === 'prev' && idCurRec > 0) {
@@ -25,29 +26,33 @@ export class EsriMap extends Component {
         } else {
             idCurRec = 0;
         }
-        
+
+        //set state in redux store
         this.props.setMapProps({
             idCurRec: idCurRec,
             idData: this.getRowData(idResults[idCurRec])
         });
     }
 
+    //store data results from identify operation
     getRowData(res) {
         return Object.keys(res.feature.attributes).map((k) => {
         return {field: k, value: res.feature.attributes[k]}
         });
     }
 
+    //identify event handler
     handleIdentify(evt) {
         let {idParams, idTask, mapView} = this.props.map;
-        var props = this.props;
-        var getRowData = this.getRowData;
-        
-        // get data to populate identify grid
+        const props = this.props;
+        const getRowData = this.getRowData;
+
+        //set identify location parameters
         idParams.set('geometry', evt.mapPoint);
         idParams.set('mapExtent', mapView.extent);
-        idTask.execute(idParams).then(function(res) {
-            console.log('results', res);
+
+        //execute identify task
+        idTask.execute(idParams).then((res) => {
             if (res.results.length > 0) {
                 $("#dialog").dialog({
                     title: 'Identify',
@@ -55,7 +60,9 @@ export class EsriMap extends Component {
                     height: '650'
                 });
 
+                //show identify display
                 $('.identify-card').css('display','block');
+                //set state in redux store
                 props.setMapProps({
                     idCurRec: 0,
                     idTotalRec: res.results.length,
@@ -68,11 +75,11 @@ export class EsriMap extends Component {
     }
 
     render() {
-    
         const options = {
             url: 'https://js.arcgis.com/4.8/'
           };
 
+        //columns for identify grid
         const columnDefs = [
               {headerName: "Field", field: "field"},
               {headerName: "Value", field: "value"}
@@ -80,9 +87,8 @@ export class EsriMap extends Component {
 
         return (
             <div id="esri-map">
-            <div id="dialog" title="Basic dialog">
+            <div id="dialog">
                 <IdentifyCard
-                    key='identifyCard'
                     columnDefs={columnDefs}
                     currentRecord={this.props.map.idCurRec}
                     totalRecords={this.props.map.idTotalRec}
@@ -96,30 +102,32 @@ export class EsriMap extends Component {
                 modulesToLoad={[
                     'esri/Map',
                     'esri/Graphic',
-                    'esri/views/MapView',
+                    'esri/core/watchUtils',
+                    'esri/identity/IdentityManager',
                     'esri/layers/MapImageLayer',
                     "esri/layers/GraphicsLayer",
-                    'esri/identity/IdentityManager',
                     'esri/tasks/IdentifyTask',
                     'esri/tasks/support/IdentifyParameters',
-                    'esri/core/watchUtils'
-                  ]}
+                    'esri/views/MapView'
+                ]}
                 onReady={({loadedModules: [
                   Map,
                   Graphic,
-                  MapView,
+                  watchUtils,
+                  IdentityManager,
                   MapImageLayer,
                   GraphicsLayer,
-                  IdentityManager,
                   IdentifyTask,
                   IdentifyParameters,
-                  watchUtils
-                ], containerNode}) => {
+                  MapView
+                ], }) => {
 
+                    //make request to config to get configuration data
                     axios.get('http://localhost:3000/config').then((res) => {
                         getToken(res.data.config);
                     }).catch((err) => console.log(err));
 
+                    //get ESRI token to authenticate map service
                     const getToken = (data) => {
                         axios.post('http://localhost:3000/token',{
                             username: jwt.sign(process.env.ARCGIS_USER, process.env.ARCGIS_SECRET),
@@ -133,32 +141,38 @@ export class EsriMap extends Component {
                                 zoom: data.zoom
                             });
 
+                            //ESRI identify task
                             let identifyTask = new IdentifyTask(`${data.mapUrl}/${data.mapService}`);
+                            //ESRI identify parameters
                             let identifyParams = new IdentifyParameters({
-                            tolerance: 3,
-                            layerOption: "top",
-                            width: mapView.width,
-                            height: mapView.height
+                                tolerance: 3,
+                                layerOption: "top",
+                                width: mapView.width,
+                                height: mapView.height
                             });
 
+                            //ESRI Identity manager
                             IdentityManager.registerToken({
                                 token: jwt.verify(response.data.token, process.env.ARCGIS_SECRET),
                                 server: data.mapUrl
                             });
 
+                            //ESRI map layer from map service
                             let layer = new MapImageLayer({
                                 url: `${data.mapUrl}/${data.mapService}`
                             });
 
+                            //layer for ESRI graphics
                             let graphicsLayer = new GraphicsLayer();
-                            let selectedGraphic = new GraphicsLayer();
 
+                            //add to map object
                             map.add(layer);
                             map.add(graphicsLayer);
-                            map.add(selectedGraphic)
 
+                            //click event
                             mapView.on('click', this.handleIdentify);
 
+                            //watch for changes in the map view
                             watchUtils.whenTrue(mapView, "stationary", () => {
                                 if (mapView.center) {
                                     this.props.setMapProps({
@@ -167,6 +181,7 @@ export class EsriMap extends Component {
                                 }
                             });
 
+                            //set state in redux store
                             this.props.setMapProps({
                                 name: data.name,
                                 idTask: identifyTask,
@@ -174,7 +189,6 @@ export class EsriMap extends Component {
                                 center: data.center,
                                 graphic: new Graphic(),
                                 graphicsLayer,
-                                selectedGraphic,
                                 mapView
                             });
                         })

@@ -11,7 +11,8 @@ export class Header extends Component {
     };
     
    render() {
-        let menuItems = headerConfig.menuItems.sort((a, b) => a.order - b.order);
+        //sort menu items
+        const menuItems = headerConfig.menuItems.sort((a, b) => a.order - b.order);
         return (
             <header className='header'>
                 <h1 className='header__title'>{this.props.map.name}</h1>

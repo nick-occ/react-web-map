@@ -4,29 +4,22 @@ html, body, #app {
     font-family: sans-serif;
 }
 
-.container {
-  height: 94%;
-  position: fixed;
+#main-frame {
   display: flex;
-  flex-direction: row;
-  flex: 10;
-  width: 100%;
-  justify-content: flex-start;
-  padding: 0;
+  flex-direction: column;
+  height: 100vh;
 }
 
-#frame {
+#map-frame {
   display: flex;
+  flex: 2;
   flex-direction: row;
-  height: 94vh;
 }
 
 #esri-map {
   flex: 2;
   order: 2;
 }
-
-
 
 #side-panel {
   flex: 1;
