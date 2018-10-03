@@ -1,8 +1,9 @@
 import React from 'react';
 
 import EsriMap from './EsriMap';
-import SidePanel from './SidePanel';
 import Header from './Header';
+import Legend from './Legend';
+import SidePanel from './SidePanel';
 
 class Home extends React.Component {
 
@@ -18,6 +19,7 @@ class Home extends React.Component {
               <div id={'map-frame'}>
                   <EsriMap/>
                   <SidePanel/>
+                  <Legend/>
               </div>
           </div>
       );

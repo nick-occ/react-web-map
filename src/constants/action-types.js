@@ -1,1 +1,2 @@
 export const SET_MAP_PROPS = "SET_MAP_PROPS";
+export const SET_VISIBILITY = "SET_VISIBILITY";

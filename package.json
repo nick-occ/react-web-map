@@ -23,6 +23,7 @@
     "jquery-ui": "^1.12.1",
     "jsonwebtoken": "^8.3.0",
     "live-server": "^1.2.0",
+    "lodash": "^4.17.11",
     "mongodb": "^3.1.4",
     "mongoose": "^5.2.14",
     "node-sass": "^4.9.3",

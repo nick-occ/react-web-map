@@ -1,0 +1,22 @@
+.legend-item {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.legend-item p {
+  margin: 0;
+  order: 2;
+  flex-basis: 80%;
+}
+
+.legend-item img {
+  order: 1;
+}
+
+.legend-item__heading {
+  margin: 0;
+  order: 2;
+  flex-basis: 80%;
+}

@@ -1,9 +1,10 @@
+import _ from 'lodash';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import jwt from 'jsonwebtoken';
-
 import EsriLoaderReact from 'esri-loader-react';
+
 import IdentifyCard from './IdentifyCard';
 import { setMapProps } from '../actions/map';
 
@@ -75,6 +76,9 @@ export class EsriMap extends Component {
     }
 
     render() {
+        let layerData = {};
+        let layerPromises;
+
         const options = {
             url: 'https://js.arcgis.com/4.8/'
           };
@@ -108,7 +112,8 @@ export class EsriMap extends Component {
                     "esri/layers/GraphicsLayer",
                     'esri/tasks/IdentifyTask',
                     'esri/tasks/support/IdentifyParameters',
-                    'esri/views/MapView'
+                    'esri/views/MapView',
+                    'esri/widgets/Legend'
                 ]}
                 onReady={({loadedModules: [
                   Map,
@@ -119,7 +124,8 @@ export class EsriMap extends Component {
                   GraphicsLayer,
                   IdentifyTask,
                   IdentifyParameters,
-                  MapView
+                  MapView,
+                  Legend
                 ], }) => {
 
                     //make request to config to get configuration data
@@ -151,9 +157,11 @@ export class EsriMap extends Component {
                                 height: mapView.height
                             });
 
+                            //ESRI token
+                            const token = jwt.verify(response.data.token, process.env.ARCGIS_SECRET);
                             //ESRI Identity manager
                             IdentityManager.registerToken({
-                                token: jwt.verify(response.data.token, process.env.ARCGIS_SECRET),
+                                token,
                                 server: data.mapUrl
                             });
 
@@ -168,6 +176,50 @@ export class EsriMap extends Component {
                             //add to map object
                             map.add(layer);
                             map.add(graphicsLayer);
+
+                            // const legend = new Legend({
+                            //     view: mapView
+                            // });
+                            //
+                            // mapView.ui.add(legend, "bottom-right");
+
+                            //get map information
+                            axios.get(`${data.mapUrl}/${data.mapService}`, {
+                                params: {
+                                token,
+                                f: 'json'}
+                            }).then((json) => {
+                                json.data['layers'].forEach((layer) => {
+                                    layerData[layer.id] = layer;
+                                });
+
+                                layerPromises = Object.keys(layerData).map((id) => {
+                                    return axios.get(`${data.mapUrl}/${data.mapService}/${id}`, {
+                                        params: {
+                                            token,
+                                            f: 'json'}
+                                    });
+                                });
+
+                                //resolve promises
+                                axios.all(layerPromises).then((layers) => {
+                                    layers.forEach((layer) => {
+                                        layerData[layer.data.id] = {
+                                            ...layerData[layer.data.id],
+                                            ..._.pick(layer.data, ['geometryType', 'drawingInfo']),
+                                            visibility: layerData[layer.data.id]['defaultVisibility']
+                                        };
+                                    });
+
+                                    //set state in redux store
+                                    this.props.setMapProps({
+                                        layerData
+                                    });
+                                });
+
+                            }).catch((err) => {
+                                console.log(err);
+                            });
 
                             //click event
                             mapView.on('click', this.handleIdentify);
@@ -189,7 +241,8 @@ export class EsriMap extends Component {
                                 center: data.center,
                                 graphic: new Graphic(),
                                 graphicsLayer,
-                                mapView
+                                mapView,
+                                map
                             });
                         })
                         .catch((err) => console.log(err));

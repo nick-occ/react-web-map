@@ -25,3 +25,9 @@ html, body, #app {
   flex: 1;
   order: 1;
 }
+
+#legend {
+  flex: 1;
+  order: 3;
+  overflow-y: scroll;
+}
