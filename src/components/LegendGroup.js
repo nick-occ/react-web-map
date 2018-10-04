@@ -17,18 +17,16 @@ export class LegendGroup extends Component {
     render() {
         return (
             <div>
-                <div className='legend-item'>
-                    <h5 className='legend-item__heading'><b>{this.props.map.layerData[this.props.layerId]['name']}</b></h5>
+                <div className='legend-group'>
+                    <h5 className='legend-group__heading'><b>{this.props.map.layerData[this.props.layerId]['name']}</b></h5>
                     <img
                         onClick={this.handleClick}
                         src={this.props.map.layerData[this.props.layerId]['visibility'] ? '/img/visible.png' : '/img/invisible.png' }/>
                 </div>
                 <div>
-                    <ul>
-                        {
-                            this.props.subLayers.map((subLayer) => <LegendLayer key={subLayer} layerId={subLayer} />)
-                        }
-                    </ul>
+                    {
+                        this.props.subLayers.map((subLayer) => <LegendLayer key={subLayer} layerId={subLayer} />)
+                    }
                 </div>
             </div>
         )

@@ -17,7 +17,7 @@ export class LegendLayer extends Component {
         return (
 
                 <div className='legend-item'>
-                    <p>{this.props.map.layerData[this.props.layerId]['name']}</p>
+                    <p className={'legend-item__heading'}>{this.props.map.layerData[this.props.layerId]['name']}</p>
                     <img
                         onClick={this.handleClick}
                         src={this.props.map.layerData[this.props.layerId]['visibility'] ? '/img/visible.png' : '/img/invisible.png' }/>

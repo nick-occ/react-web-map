@@ -1,18 +1,32 @@
-.legend-item {
+.legend-group {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
 }
 
-.legend-item p {
+.legend-group img {
+  order: 1;
+  flex-basis: 5%;
+}
+
+.legend-group__heading {
   margin: 0;
   order: 2;
   flex-basis: 80%;
 }
 
+.legend-item {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+}
+
 .legend-item img {
   order: 1;
+  flex-basis: 5%;
+  margin: .2em;
 }
 
 .legend-item__heading {
