@@ -1,7 +1,6 @@
 const mapReducerDefaultState = {
     name: '',
     mapView: null,
-    map: null,
     idLayer: 'Identify',
     idCurRec: 0,
     idTotalRec: 0,
@@ -16,9 +15,10 @@ export default (state = mapReducerDefaultState, action) => {
       case 'SET_MAP_PROPS':
           return {...state, ...action.map};
       case 'SET_VISIBILITY':
-          let layerData = state.layerData[action.id];
-          let mapView = state.mapView;
-          let visible = layerData.visibility;
+          const newState = Object.assign({}, state);
+          const layerData = newState.layerData[action.id];
+          const mapView = newState.mapView;
+          const visible = layerData.visibility;
           mapView.map.layers.items[0].allSublayers.items.forEach((item) => {
               if (item.id === parseInt(action.id)) {
                   item.visible = !visible;
@@ -26,9 +26,7 @@ export default (state = mapReducerDefaultState, action) => {
           });
 
           layerData.visibility = !visible;
-          return {
-              ...state
-          };
+          return newState;
       default:
           return state
   }
