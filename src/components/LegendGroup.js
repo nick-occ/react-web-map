@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
+import { getSublayer, getLayerVisibility } from '../selectors/map';
 import { setVisibility } from '../actions/map';
 import LegendLayer from './LegendLayer';
 
@@ -11,7 +12,28 @@ export class LegendGroup extends Component {
     }
 
     handleClick() {
-        this.props.setVisibility(this.props['layerId']);
+        const {layerId, map} = this.props;
+        this.props.setVisibility(layerId);
+
+        if (getLayerVisibility(map, layerId)) {
+            getSublayer(map, layerId).forEach((layer) => {
+                if (getLayerVisibility(map, layer) === false) {
+                    this.props.setVisibility(layer);
+                }
+            });
+        } else {
+            const sublayersLength = getSublayer(map, layerId).length;
+            const visibleSublayers = getSublayer(map, layerId).reduce((acc, nv) => {
+                if (getLayerVisibility(map, nv)) {
+                    acc++
+                }
+                return acc
+            }, 0);
+
+            if (sublayersLength === visibleSublayers) {
+                getSublayer(map, layerId).forEach((layer) => this.props.setVisibility(layer));
+            }
+        }
     }
 
     render() {
