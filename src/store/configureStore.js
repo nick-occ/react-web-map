@@ -1,4 +1,5 @@
-import { createStore, combineReducers, compose } from 'redux';
+import { applyMiddleware, createStore, combineReducers, compose } from 'redux';
+import thunk from 'redux-thunk';
 import mapReducer from '../reducers/map';
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
@@ -8,7 +9,6 @@ export default () => {
     return createStore(
         combineReducers({
             map: mapReducer
-        }),
-        composeEnhancers()
+        }),composeEnhancers(applyMiddleware(thunk))
     );
 }

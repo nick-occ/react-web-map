@@ -5,3 +5,7 @@ export const getSublayer = (state, id) => {
 export const getParentLayer = (state, id) =>  state.layerData[id]['parentLayerId'];
 
 export const getLayerVisibility = (state, id) => state.layerData[id]['visibility'];
+
+export const getMapUrl = (state) => `${state.config['mapUrl']}/${state.config['mapService']}`;
+
+export const getMapView = (state) => state.mapView;

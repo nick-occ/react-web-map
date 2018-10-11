@@ -27,6 +27,10 @@ export default (state = mapReducerDefaultState, action) => {
 
           layerData.visibility = !visible;
           return newState;
+      case 'SET_TOKEN':
+          return {...state, token: action.token};
+      case 'SET_CONFIG':
+          return {...state, config: action.config};
       default:
           return state
   }
