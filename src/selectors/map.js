@@ -9,3 +9,7 @@ export const getLayerVisibility = (state, id) => state.layerData[id]['visibility
 export const getMapUrl = (state) => `${state.config['mapUrl']}/${state.config['mapService']}`;
 
 export const getMapView = (state) => state.mapView;
+
+export const getMapName = (state) => state.config['name'];
+
+export const getSearchResults = (state) => state.searchResults;

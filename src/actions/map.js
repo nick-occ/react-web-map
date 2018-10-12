@@ -1,4 +1,4 @@
-import { SET_MAP_PROPS, SET_VISIBILITY, SET_TOKEN, SET_CONFIG } from '../constants/action-types';
+import { SET_MAP_PROPS, SET_VISIBILITY, SET_TOKEN, SET_CONFIG, SEARCH_RESULTS } from '../constants/action-types';
 import axios from "axios";
 import jwt from "jsonwebtoken";
 
@@ -44,3 +44,23 @@ export const setConfig = (config) => {
         config
     }
 };
+
+export const getSearchResults = (term, longitude, latitude) => {
+    return(dispatch) => {
+        return axios.post('http://localhost:3000/search', {
+            term,
+            longitude,
+            latitude
+        })
+            .then((res) => dispatch(setSearchResults(res.data.businesses)))
+            .catch((err) => console.log(err));
+    }
+};
+
+export const setSearchResults = (results) => {
+    console.log(results);
+    return {
+        type: SEARCH_RESULTS,
+        results
+    }
+}

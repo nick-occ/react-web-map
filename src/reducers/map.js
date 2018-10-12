@@ -1,13 +1,8 @@
 const mapReducerDefaultState = {
-    name: '',
     mapView: null,
-    idLayer: 'Identify',
-    idCurRec: 0,
-    idTotalRec: 0,
-    idData: [],
-    idParams: null,
-    idTask: null,
-    layerData: {}
+    config: {},
+    layerData: {},
+    searchResults: []
 };
 
 export default (state = mapReducerDefaultState, action) => {
@@ -31,6 +26,8 @@ export default (state = mapReducerDefaultState, action) => {
           return {...state, token: action.token};
       case 'SET_CONFIG':
           return {...state, config: action.config};
+      case 'SEARCH_RESULTS':
+          return {...state, searchResults: action.results};
       default:
           return state
   }
