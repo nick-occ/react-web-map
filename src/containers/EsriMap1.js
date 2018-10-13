@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import jwt from "jsonwebtoken";
 import EsriLoaderReact from 'esri-loader-react';
 
-import {setMapProps, getToken, getConfig} from '../actions/map';
+import {setMapProps} from '../actions/map';
 
 import Identify from '../components/Identify';
 
@@ -12,11 +12,6 @@ export class EsriMap1 extends Component {
     constructor() {
         super();
         this.mapView = null;
-    }
-
-    componentDidMount() {
-        this.props.getToken();
-        this.props.getConfig();
     }
 
     render() {
@@ -36,12 +31,14 @@ export class EsriMap1 extends Component {
                     modulesToLoad={[
                         'esri/Map',
                         'esri/identity/IdentityManager',
+                        "esri/layers/GraphicsLayer",
                         'esri/layers/MapImageLayer',
                         'esri/views/MapView'
                     ]}
                     onReady={({loadedModules: [
                         Map,
                         IdentityManager,
+                        GraphicsLayer,
                         MapImageLayer,
                         MapView
                         ],}) => {
@@ -53,6 +50,8 @@ export class EsriMap1 extends Component {
                                 center,
                                 zoom
                             });
+
+                            const graphicsLayer = new GraphicsLayer();
 
                             this.props.setMapProps({
                                 mapView: this.mapView
@@ -69,6 +68,7 @@ export class EsriMap1 extends Component {
                                 url: `${mapUrl}/${mapService}`
                             });
                             map.add(mapLayer);
+                            map.add(graphicsLayer);
                         }
                     }
                 >
@@ -81,8 +81,6 @@ export class EsriMap1 extends Component {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        getToken: () => dispatch(getToken()),
-        getConfig: () => dispatch(getConfig()),
         setMapProps: (map) => dispatch(setMapProps(map))
     };
 };
