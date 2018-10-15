@@ -1,35 +1,22 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React from 'react';
+import Location from '../containers/Location';
 
-import Location from './Location';
-
-export class Locations extends Component {
-
-  constructor() {
-    super();
-  }
-
-  render() {
+const Locations = (props) => {
     return (
-      <div>
-        <div className="location-header">
-          <h3 className="location-header__heading">Results</h3>
-          {
-            this.props.businesses.map((business, index) => (
-              <Location
-                key={business.id}
-                data={business}
-              />)
-            )
-          } 
+        <div>
+            <div className="location-header">
+                <h3 className="location-header__heading">Results</h3>
+                {
+                    props.businesses.map((business) => (
+                        <Location
+                            key={business.id}
+                            data={business}
+                        />)
+                    )
+                }
+            </div>
         </div>
-      </div>
     );
-  }
-} 
-
-const mapStateToProps = state => {
-  return { map: state.map };
 };
 
-export default connect(mapStateToProps)(Locations);
+export default Locations;
