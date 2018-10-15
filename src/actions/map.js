@@ -1,6 +1,15 @@
-import { SET_MAP_PROPS, SET_VISIBILITY, SET_TOKEN, SET_CONFIG, SEARCH_RESULTS } from '../constants/action-types';
+import {
+    SET_MAP_PROPS,
+    SET_VISIBILITY,
+    SET_TOKEN,
+    SET_CONFIG,
+    SEARCH_RESULTS,
+    SET_CENTER,
+    LAYER_DATA
+} from '../constants/action-types';
 import axios from "axios";
 import jwt from "jsonwebtoken";
+import _ from 'lodash';
 
 // SET_MAP_PROPS
 export const setMapProps = (map) => ({ type: SET_MAP_PROPS , map });
@@ -9,7 +18,7 @@ export const setMapProps = (map) => ({ type: SET_MAP_PROPS , map });
 export const setVisibility = (id) => ({ type: SET_VISIBILITY, id});
 
 //get ESRI token to authenticate map service
-export const getToken = () => {
+export const handleToken = () => {
     return(dispatch) => {
         return axios.post('http://localhost:3000/token',{
             username: jwt.sign(process.env.ARCGIS_USER, process.env.ARCGIS_SECRET),
@@ -29,7 +38,7 @@ export const setToken = (token) => {
 };
 
 //get configuration from the database
-export const getConfig = () => {
+export const handleConfig = () => {
     return(dispatch) => {
         return axios.get('http://localhost:3000/config')
             .then((res) => dispatch(setConfig(res.data.config)))
@@ -58,9 +67,44 @@ export const getSearchResults = (term, longitude, latitude) => {
 };
 
 export const setSearchResults = (results) => {
-    console.log(results);
+    // console.log(results);
     return {
         type: SEARCH_RESULTS,
         results
     }
-}
+};
+
+export const setCenter = (coords) => {
+    return {
+        type: SET_CENTER,
+        coords
+    }
+};
+
+export const handleLayerData = (mapServiceUrl, token) => {
+    const verifiedToken = jwt.verify(token, process.env.ARCGIS_SECRET);
+    return(dispatch) => {
+        return axios.get(mapServiceUrl, {
+            params: {
+                token: verifiedToken,
+                f: 'json'
+            }
+        })
+            .then((json) => {
+                const layerData = {};
+                json.data['layers'].forEach((layer) => {
+                    layerData[layer.id] = _.pick(layer, ['id','defaultVisibility','name', 'parentLayerId', 'subLayerIds'])
+                    layerData[layer.id]['visibility'] = layer['defaultVisibility'];
+                });
+                dispatch(setLayerData(layerData))
+            })
+            .catch((err) => console.log(err));
+    }
+};
+
+export const setLayerData = (layerData) => {
+    return {
+        type: LAYER_DATA,
+        layerData
+    }
+};
