@@ -5,7 +5,7 @@ import EsriLoaderReact from 'esri-loader-react';
 
 import {setMapProps} from '../actions/map';
 
-import Identify from '../components/Identify';
+import Identify from './Identify';
 
 export class EsriMap1 extends Component {
 
