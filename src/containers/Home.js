@@ -1,31 +1,36 @@
-import React from 'react';
+import React , {Component} from 'react';
+import { connect } from 'react-redux';
 
-import EsriMap from './EsriMap';
 import EsriMap1 from './EsriMap1';
-import Header from './Header';
+import Header from '../components/Header';
 import Legend from './Legend';
-import SidePanel from './SidePanel';
+import SidePanel from '../components/SidePanel';
 
-import {getToken, getConfig} from '../actions/map';
-import { getMapName, getSearchResults } from '../selectors/map';
-import connect from "react-redux/es/connect/connect";
+import {handleToken, handleConfig, handleLayerData} from '../actions/map';
+import { getConfig, getSearchResults, getToken, getMapUrl} from '../selectors/map';
 
-class Home extends React.Component {
+class Home extends Component {
 
     constructor() {
       super();
     }
 
     componentDidMount() {
-        this.props.getToken();
-        this.props.getConfig();
+        this.props.handleToken();
+        this.props.handleConfig();
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        if (prevProps.map.token !== getToken(this.props.map)) {
+            this.props.handleLayerData(getMapUrl(this.props.map),  getToken(this.props.map));
+        }
     }
   
     render() {
       return (
           <div id='main-frame'>
               <Header
-                  title={getMapName(this.props.map)}
+                  title={getConfig(this.props.map)['name']}
               />
               <div id={'map-frame'}>
                   <EsriMap1/>
@@ -42,8 +47,9 @@ class Home extends React.Component {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        getToken: () => dispatch(getToken()),
-        getConfig: () => dispatch(getConfig())
+        handleToken: () => dispatch(handleToken()),
+        handleConfig: () => dispatch(handleConfig()),
+        handleLayerData: (mapUrl, token) => dispatch(handleLayerData(mapUrl, token))
     };
 };
 
