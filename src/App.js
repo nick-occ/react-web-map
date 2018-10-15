@@ -4,7 +4,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider }  from 'react-redux';
 
-import Home from './components/Home';
+import Home from './containers/Home';
 import configureStore from './store/configureStore';
 
 import './styles/styles.scss';

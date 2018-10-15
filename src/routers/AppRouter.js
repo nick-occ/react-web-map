@@ -2,7 +2,7 @@ import React from 'react';
 import { Router, Route } from 'react-router-dom';
 import createHistory from 'history/createBrowserHistory'
 
-import Home from '../components/Home';
+import Home from '../containers/Home';
 
 export const history = createHistory();
 const AppRouter = () => (
