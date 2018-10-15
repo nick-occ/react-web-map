@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import EsriLoaderReact from 'esri-loader-react';
 
 import { getMapUrl, getMapView } from '../selectors/map';
-import IdentifyGrid from "./IdentifyGrid";
+import IdentifyGrid from "../components/IdentifyGrid";
 
 export class Identify extends  Component {
 
