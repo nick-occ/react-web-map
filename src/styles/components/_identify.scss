@@ -1,3 +1,7 @@
+.ag-body-viewport {
+  overflow-x: hidden;
+}
+
 .card-title {
   color: black;
   font-weight: bold;
@@ -6,8 +10,13 @@
 .identify-card {
   align-items: center;
   display: none;
-  position: absolute;
   z-index: 1;
+  height: auto;
+}
+
+.identify-grid {
+  height: 250px;
+  width: auto;
 }
 
 .identify-selector {

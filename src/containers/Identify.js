@@ -82,7 +82,9 @@ export class Identify extends  Component {
                                 onClick={this.handleClick}>&gt;
                             </button>
                         </div>
-                        <IdentifyGrid rowData={this.state.rowData}/>
+                        <IdentifyGrid
+                            rowData={this.state.rowData}
+                        />
                     </div>
                 </div>
                 <EsriLoaderReact
@@ -103,15 +105,11 @@ export class Identify extends  Component {
                                     if (res.results.length > 0) {
                                         $("#dialog").dialog({
                                             title: 'Identify',
-                                            width: '21.5rem',
-                                            height: '650',
                                             resizable: false,
                                         });
                                         //show identify display
-                                        $('.identify-card').css('display','block');
+                                        $('.identify-card').css('display','inherit');
 
-                                        console.log('results', res);
-                                        console.log('rowData', this.getRowData(res.results[0]));
                                         this.setState({
                                             currentRecord: 0,
                                             idResults: res.results,

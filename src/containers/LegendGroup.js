@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { getSublayer, getLayerVisibility } from '../selectors/map';
+import { allSublayersVisible, getSublayer, getLayerVisibility } from '../selectors/map';
 import { setVisibility } from '../actions/map';
 import LegendLayer from './LegendLayer';
 
@@ -22,15 +22,7 @@ export class LegendGroup extends Component {
                 }
             });
         } else {
-            const sublayersLength = getSublayer(map, layerId).length;
-            const visibleSublayers = getSublayer(map, layerId).reduce((acc, nv) => {
-                if (getLayerVisibility(map, nv)) {
-                    acc++
-                }
-                return acc
-            }, 0);
-
-            if (sublayersLength === visibleSublayers) {
+            if (allSublayersVisible(map, layerId)) {
                 getSublayer(map, layerId).forEach((layer) => this.props.setVisibility(layer));
             }
         }
@@ -66,4 +58,3 @@ const mapStateToProps = state => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(LegendGroup);
-

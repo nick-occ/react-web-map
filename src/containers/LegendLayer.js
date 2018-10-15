@@ -15,21 +15,19 @@ export class LegendLayer extends Component {
         const parentId = getParentLayer(map, layerId);
         this.props.setVisibility(layerId);
 
-        if (getLayerVisibility(map, layerId) && getLayerVisibility(map, parentId) === false) {
+        if (parentId !== -1 && getLayerVisibility(map, parentId) === false) {
             this.props.setVisibility(parentId);
         }
     }
 
     render() {
         return (
-
-                <div className='legend-item'>
-                    <p className={'legend-item__heading'}>{this.props.map.layerData[this.props.layerId]['name']}</p>
-                    <img
-                        onClick={this.handleClick}
-                        src={this.props.map.layerData[this.props.layerId]['visibility'] ? '/img/visible.png' : '/img/invisible.png' }/>
-                </div>
-
+            <div className='legend-item'>
+                <p className={'legend-item__heading'}>{this.props.map.layerData[this.props.layerId]['name']}</p>
+                <img
+                    onClick={this.handleClick}
+                    src={this.props.map.layerData[this.props.layerId]['visibility'] ? '/img/visible.png' : '/img/invisible.png' }/>
+            </div>
         )
     }
 }
