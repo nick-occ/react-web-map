@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { allSublayersVisible, getSublayer, getLayerVisibility } from '../selectors/map';
+import { allSublayersVisibility, getSublayer, getLayerVisibility } from '../selectors/map';
 import { setVisibility } from '../actions/map';
 import LegendLayer from './LegendLayer';
 
@@ -21,10 +21,10 @@ export class LegendGroup extends Component {
                     this.props.setVisibility(layer);
                 }
             });
-        } else {
-            if (allSublayersVisible(map, layerId)) {
-                getSublayer(map, layerId).forEach((layer) => this.props.setVisibility(layer));
-            }
+        }
+
+        if (getLayerVisibility(map, layerId) === false && allSublayersVisibility(map, layerId, true)) {
+            getSublayer(map, layerId).forEach((layer) => this.props.setVisibility(layer));
         }
     }
 

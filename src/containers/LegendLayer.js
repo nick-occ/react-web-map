@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import { setVisibility } from '../actions/map';
-import { getParentLayer, getLayerVisibility } from '../selectors/map';
+import { allSublayersVisibility, getParentLayer, getLayerVisibility } from '../selectors/map';
 
 export class LegendLayer extends Component {
     constructor() {
@@ -16,6 +16,10 @@ export class LegendLayer extends Component {
         this.props.setVisibility(layerId);
 
         if (parentId !== -1 && getLayerVisibility(map, parentId) === false) {
+            this.props.setVisibility(parentId);
+        }
+
+        if (parentId !== -1 && allSublayersVisibility(map, parentId, false)) {
             this.props.setVisibility(parentId);
         }
     }

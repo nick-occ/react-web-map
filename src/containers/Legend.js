@@ -15,7 +15,6 @@ export class Legend extends Component {
         const groups = getParentLayers(this.props.map);
         const noParentLayers = getNoParentLayers(this.props.map);
         const layers = groups.concat(noParentLayers).sort();
-        console.log('layers', layers);
 
         return (
             <div id='legend'>
