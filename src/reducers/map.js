@@ -1,3 +1,5 @@
+import { getMapUrl } from '../selectors/map'
+
 const mapReducerDefaultState = {
     mapView: null,
     config: {},
@@ -14,9 +16,14 @@ export default (state = mapReducerDefaultState, action) => {
           const layerData = setVisibleState.layerData[action.id];
           const mapView = setVisibleState.mapView;
           const visible = layerData.visibility;
-          mapView.map['layers'].items[0]['allSublayers'].items.forEach((item) => {
-              if (item.id === parseInt(action.id)) {
-                  item.visible = !visible;
+
+          mapView.map['layers'].items.forEach((item) => {
+              if (item['url'] === getMapUrl(state)) {
+                  item['allSublayers'].items.forEach((layer) => {
+                      if (layer.id === parseInt(action.id)) {
+                          layer.visible = !visible;
+                      }
+                  })
               }
           });
 

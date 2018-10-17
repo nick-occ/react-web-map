@@ -28,11 +28,13 @@ export const getNoParentLayers = (state) => {
 
 export const isGroupLayer = (state, id) => {
     return state.layerData[id]['parentLayerId'] === -1 && state.layerData[id]['subLayerIds'] !== null
-}
+};
 
 export const getLayerData = (state) => state.layerData;
 
 export const getLayerVisibility = (state, id) => state.layerData[id]['visibility'];
+
+export const getVisibleLayers = (state) => Object.keys(state.layerData).filter((layer) => state.layerData[layer]['visibility'] === true);
 
 export const getMapUrl = (state) => `${state.config['mapUrl']}/${state.config['mapService']}`;
 
