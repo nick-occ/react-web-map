@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import EsriLoaderReact from 'esri-loader-react';
 
-import { getMapUrl, getMapView } from '../selectors/map';
+import _ from 'lodash';
+
+import { getMapUrl, getMapView, getVisibleLayers } from '../selectors/map';
 import IdentifyGrid from "../components/IdentifyGrid";
 
 export class Identify extends  Component {
@@ -39,7 +41,7 @@ export class Identify extends  Component {
         this.setState({
             currentRecord: currRec,
             layerName: this.state.idResults[currRec].layerName,
-            rowData: this.getRowData(this.state.idResults[currRec])
+            rowData: this.getRowData(this.state.idResults[currRec].attributes)
         },() => this.buttonVisible());
 
     }
@@ -55,9 +57,9 @@ export class Identify extends  Component {
     };
 
     //store data results from identify operation
-    getRowData(res) {
-        return Object.keys(res.feature.attributes).map((k) => {
-            return {field: k, value: res.feature.attributes[k]}
+    getRowData(attributes) {
+        return Object.keys(attributes).map((k) => {
+            return {field: k, value: attributes[k]}
         });
     }
 
@@ -98,10 +100,11 @@ export class Identify extends  Component {
                         IdentifyParameters
                         ],}) => {
                             const handleIdentify = (evt) => {
+
                                 identifyParams.set('geometry', evt.mapPoint);
                                 identifyParams.set('mapExtent', getMapView(this.props.map)['extent']);
+                                identifyParams.set('layerIds', getVisibleLayers(this.props.map));
                                 identifyTask.execute(identifyParams).then((res) => {
-
                                     if (res.results.length > 0) {
                                         $("#dialog").dialog({
                                             title: 'Identify',
@@ -110,11 +113,34 @@ export class Identify extends  Component {
                                         //show identify display
                                         $('.identify-card').css('display','inherit');
 
+                                        //variable to store unique results
+                                        const uniqueResults = [];
+
+                                        //only pick necessary values
+                                        const results = res.results.map((result) => {
+                                            const pickedResults = _.pick(result, ['layerId', 'layerName']);
+                                            const featureResults = _.pick(result['feature'],['attributes']);
+                                            return {...pickedResults,...featureResults};
+                                        });
+
+                                        //exlude duplicate results
+                                        results.forEach((result) => {
+                                            let exists = false;
+                                            uniqueResults.forEach((newResult) => {
+                                                if (_.isEqual(result, newResult) === true) {
+                                                    exists = true;
+                                                }
+                                            });
+                                            if (exists === false) {
+                                                uniqueResults.push(result);
+                                            }
+                                        });
+
                                         this.setState({
                                             currentRecord: 0,
-                                            idResults: res.results,
-                                            layerName: res.results[0].layerName,
-                                            rowData: this.getRowData(res.results[0])
+                                            idResults: uniqueResults,
+                                            layerName: uniqueResults[0].layerName,
+                                            rowData: this.getRowData(uniqueResults[0].attributes)
                                         });
                                         this.buttonVisible();
                                     }
@@ -129,7 +155,7 @@ export class Identify extends  Component {
                             //ESRI identify parameters
                             const identifyParams = new IdentifyParameters({
                                 tolerance: 3,
-                                layerOption: "top",
+                                layerOption: "visible",
                                 width: getMapView(map)['width'],
                                 height: getMapView(map)['height']
                             });
