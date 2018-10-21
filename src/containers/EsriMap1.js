@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import jwt from "jsonwebtoken";
 import EsriLoaderReact from 'esri-loader-react';
+import Graphics from '../components/Graphics';
+import {getSearchGraphics} from "../selectors/map";
 
 import {setMapProps} from '../actions/map';
 
@@ -22,7 +24,7 @@ export class EsriMap1 extends Component {
         }
 
         const {mapUrl, mapService, center, basemap, zoom} = this.props.map.config;
-        const {token} = this.props.map;
+        const {token, searchResults} = this.props.map;
 
         return (
             <div id='esri-map'>
@@ -51,7 +53,14 @@ export class EsriMap1 extends Component {
                                 zoom
                             });
 
-                            const graphicsLayer = new GraphicsLayer();
+                            //graphics for searching
+                            const searchGraphics = new GraphicsLayer({
+                                id: 'searchGraphics'
+                            });
+
+                            const identifyGraphics = new GraphicsLayer({
+                                id: 'identifyGraphics'
+                            });
 
                             this.props.setMapProps({
                                 mapView: this.mapView
@@ -67,13 +76,15 @@ export class EsriMap1 extends Component {
                             const mapLayer = new MapImageLayer({
                                 url: `${mapUrl}/${mapService}`
                             });
-                            map.add(mapLayer);
-                            map.add(graphicsLayer);
+                            map.addMany([mapLayer, searchGraphics, identifyGraphics]);
                         }
                     }
                 >
                 </EsriLoaderReact>
                 {this.mapView && <Identify/>}
+                <Graphics
+                    graphics={searchResults}
+                />
             </div>
         )
     }

@@ -1,4 +1,4 @@
-import { getMapUrl } from '../selectors/map'
+import {formatSearchGraphics, getMapUrl} from '../selectors/map'
 
 const mapReducerDefaultState = {
     mapView: null,
@@ -35,13 +35,24 @@ export default (state = mapReducerDefaultState, action) => {
           return {...state, config: action.config};
       case 'SEARCH_RESULTS':
           return {...state, searchResults: action.results};
+      case 'CLEAR_SEARCH_RESULTS':
+          return {...state, searchResults: []};
+      case 'SEARCH_GRAPHICS':
+          const setSearchState = Object.assign({}, state);
+          setSearchState.mapView.map['allLayers'].items.forEach((item) => {
+              if (item['id'] === 'searchGraphics') {
+                  item.removeAll();
+                  item.addMany(action.results);
+              }
+          });
+          return setSearchState;
       case 'SET_CENTER':
           const setCenterState = Object.assign({}, state);
           setCenterState.mapView.center = action.coords;
-          return {...state, mapView: setCenterState.mapView};
+          return setCenterState;
       case 'LAYER_DATA':
           return {...state, layerData: action.layerData};
       default:
-          return state
+          return state;
   }
 };

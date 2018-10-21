@@ -1,5 +1,5 @@
 import React from 'react';
-import Locations from './Locations'
+import Locations from './Locations';
 
 const SidePanel = (props) => {
     if (props.searchResults.length > 0) {

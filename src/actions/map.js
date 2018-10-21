@@ -3,6 +3,8 @@ import {
     SET_VISIBILITY,
     SET_TOKEN,
     SET_CONFIG,
+    SEARCH_GRAPHICS,
+    CLEAR_SEARCH_RESULTS,
     SEARCH_RESULTS,
     SET_CENTER,
     LAYER_DATA
@@ -25,7 +27,7 @@ export const handleToken = () => {
             password: jwt.sign(process.env.ARCGIS_PASS, process.env.ARCGIS_SECRET)
         })
             .then((res) => dispatch(setToken(res.data.token)))
-            .catch((err) => console.log(err));
+            .catch((err) => console.error(err));
     }
 };
 
@@ -42,7 +44,7 @@ export const handleConfig = () => {
     return(dispatch) => {
         return axios.get('http://localhost:3000/config')
             .then((res) => dispatch(setConfig(res.data.config)))
-            .catch((err) => console.log(err));
+            .catch((err) => console.error(err));
     }
 };
 
@@ -61,15 +63,30 @@ export const getSearchResults = (term, longitude, latitude) => {
             longitude,
             latitude
         })
-            .then((res) => dispatch(setSearchResults(res.data.businesses)))
-            .catch((err) => console.log(err));
+            .then((res) => {
+                dispatch(clearSearchGraphics());
+                dispatch(setSearchResults(res.data.businesses));
+            })
+            .catch((err) => console.error(err));
     }
 };
 
 export const setSearchResults = (results) => {
-    // console.log(results);
     return {
         type: SEARCH_RESULTS,
+        results
+    }
+};
+
+export const clearSearchGraphics = () => {
+    return {
+        type: CLEAR_SEARCH_RESULTS,
+    }
+};
+
+export const setSearchGraphics = (results) => {
+    return {
+        type: SEARCH_GRAPHICS,
         results
     }
 };
@@ -98,7 +115,7 @@ export const handleLayerData = (mapServiceUrl, token) => {
                 });
                 dispatch(setLayerData(layerData))
             })
-            .catch((err) => console.log(err));
+            .catch((err) => console.error(err));
     }
 };
 

@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 export const getSublayer = (state, id) => {
     return Object.keys(state.layerData).filter((layer) => state.layerData[layer]['parentLayerId'] === parseInt(id));
 };
@@ -45,3 +47,28 @@ export const getToken = (state) => state.token;
 export const getConfig = (state) => state.config;
 
 export const getSearchResults = (state) => state.searchResults;
+
+export const getSearchGraphics = (state) => state.searchGraphics;
+
+export const formatSearchGraphics = (state) => {
+    return state.searchResults.map((result) => {
+        return {
+            geometry: {
+                type: 'point',
+                latitude: result.coordinates['latitude'],
+                longitude: result.coordinates['longitude']
+            },
+            symbol: {
+                type: "simple-marker",
+                style: "square",
+                color: "blue",
+                size: "8px",
+                outline: {
+                    color: [ 255, 255, 0 ],
+                    width: 3
+                  }
+            },
+            attributes: _.pick(result, ['location','name','phone'])
+        }
+    });
+}
