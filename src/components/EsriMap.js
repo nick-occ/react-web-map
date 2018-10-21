@@ -5,7 +5,6 @@ import axios from 'axios';
 import jwt from 'jsonwebtoken';
 import EsriLoaderReact from 'esri-loader-react';
 
-import IdentifyCard from './IdentifyCard';
 import { setMapProps } from '../actions/map';
 
 export class EsriMap extends Component {
@@ -38,7 +37,7 @@ export class EsriMap extends Component {
     //store data results from identify operation
     getRowData(res) {
         return Object.keys(res.feature.attributes).map((k) => {
-        return {field: k, value: res.feature.attributes[k]}
+            return {field: k, value: res.feature.attributes[k]}
         });
     }
 
@@ -63,6 +62,7 @@ export class EsriMap extends Component {
 
                 //show identify display
                 $('.identify-card').css('display','block');
+
                 //set state in redux store
                 props.setMapProps({
                     idCurRec: 0,
@@ -72,7 +72,7 @@ export class EsriMap extends Component {
                     idData: getRowData(res.results[0])
                 });
             }
-        }).catch((err) => console.log(err));
+        }).catch((err) => console.error(err));
     }
 
     render() {
@@ -92,14 +92,7 @@ export class EsriMap extends Component {
         return (
             <div id="esri-map">
             <div id="dialog">
-                <IdentifyCard
-                    columnDefs={columnDefs}
-                    currentRecord={this.props.map.idCurRec}
-                    totalRecords={this.props.map.idTotalRec}
-                    rowData={this.props.map.idData}
-                    identifyLayer={this.props.map.idLayer}
-                    getRec = {this.getRec}
-                />
+
             </div>
             <EsriLoaderReact
                 options={options}
@@ -131,7 +124,9 @@ export class EsriMap extends Component {
                     //make request to config to get configuration data
                     axios.get('http://localhost:3000/config').then((res) => {
                         getToken(res.data.config);
-                    }).catch((err) => console.log(err));
+
+                    }).catch((err) => console.error(err));
+
 
                     //get ESRI token to authenticate map service
                     const getToken = (data) => {
@@ -217,9 +212,7 @@ export class EsriMap extends Component {
                                     });
                                 });
 
-                            }).catch((err) => {
-                                console.log(err);
-                            });
+                            }).catch((err) => console.error(err));
 
                             //click event
                             mapView.on('click', this.handleIdentify);
@@ -245,10 +238,13 @@ export class EsriMap extends Component {
                                 map
                             });
                         })
-                        .catch((err) => console.log(err));
-                        }
+                        .catch((err) => console.error(err));
+                        };
+
                     }
+
                 }
+
             >
             </EsriLoaderReact>
             </div>
