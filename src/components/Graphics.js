@@ -1,40 +1,16 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import EsriLoaderReact from 'esri-loader-react';
-import { setSearchGraphics } from "../actions/map";
-import _ from "lodash";
 
-export class Graphics extends Component {
+import { setGraphics } from "../actions/map";
+
+export class Graphics extends PureComponent {
     constructor() {
         super();
     }
 
-    formatGraphics(graphics) {
-        return graphics.map((result) => {
-            return {
-                geometry: {
-                    type: 'point',
-                    latitude: result.coordinates['latitude'],
-                    longitude: result.coordinates['longitude']
-                },
-                symbol: {
-                    type: "simple-marker",
-                    style: "square",
-                    color: "blue",
-                    size: "8px",
-                    outline: {
-                        color: [255, 255, 0],
-                        width: 3
-                    }
-                },
-                attributes: _.pick(result, ['location', 'name', 'phone'])
-            }
-        });
-    }
-
     render() {
         const options = {url: 'https://js.arcgis.com/4.8/'};
-        if (this.props['graphics'].length > 0) {
             return (
                  <EsriLoaderReact
                     options={options}
@@ -44,11 +20,10 @@ export class Graphics extends Component {
                     onReady={({loadedModules: [
                         Graphic
                         ],}) => {
-                            if (this.props['graphics'].length > 0) {
-                                this.props.setSearchGraphics(
-                                    this.formatGraphics(this.props.graphics)
-                                        .map((graphic) => new Graphic(graphic)
-                                    )
+                            if (this.props.graphics) {
+                                this.props.setGraphics(
+                                    this.props.graphics.map((graphic) => new Graphic(graphic)),
+                                    this.props.graphicsLayer
                                 );
                             }
                         }
@@ -56,15 +31,12 @@ export class Graphics extends Component {
                 >
                 </EsriLoaderReact>
             )
-        } else {
-            return null;
-        }
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        setSearchGraphics: (results) => dispatch(setSearchGraphics(results))
+        setGraphics: (results, graphicsLayer) => dispatch(setGraphics(results, graphicsLayer))
     };
 };
 

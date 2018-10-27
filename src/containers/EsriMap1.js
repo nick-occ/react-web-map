@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import _ from 'lodash';
 import jwt from "jsonwebtoken";
 import EsriLoaderReact from 'esri-loader-react';
 import Graphics from '../components/Graphics';
-import {getSearchGraphics} from "../selectors/map";
 
 import {setMapProps} from '../actions/map';
 
@@ -13,7 +13,29 @@ export class EsriMap1 extends Component {
 
     constructor() {
         super();
-        this.mapView = null;
+    }
+
+    formatGraphics(graphics) {
+        return graphics.map((result) => {
+           return {
+               geometry: {
+                   type: 'point',
+                   latitude: result.coordinates['latitude'],
+                   longitude: result.coordinates['longitude']
+               },
+               symbol: {
+                   type: "simple-marker",
+                   style: "square",
+                   color: "blue",
+                   size: "8px",
+                   outline: {
+                       color: [255, 255, 0],
+                       width: 3
+                   }
+               },
+               attributes: _.pick(result, ['location', 'name', 'phone'])
+           };
+        });
     }
 
     render() {
@@ -24,7 +46,7 @@ export class EsriMap1 extends Component {
         }
 
         const {mapUrl, mapService, center, basemap, zoom} = this.props.map.config;
-        const {token, searchResults} = this.props.map;
+        const {mapView, token, searchResults} = this.props.map;
 
         return (
             <div id='esri-map'>
@@ -46,7 +68,7 @@ export class EsriMap1 extends Component {
                         ],}) => {
                             const map = new Map({basemap});
 
-                            this.mapView = new MapView({
+                            const mapView = new MapView({
                                 container: 'esri-map',
                                 map,
                                 center,
@@ -59,11 +81,12 @@ export class EsriMap1 extends Component {
                             });
 
                             const identifyGraphics = new GraphicsLayer({
-                                id: 'identifyGraphics'
+                                id: 'identifyGraphics',
+                                opacity: .3
                             });
 
                             this.props.setMapProps({
-                                mapView: this.mapView
+                                mapView
                             });
 
                             const verifiedToken = jwt.verify(token, process.env.ARCGIS_SECRET);
@@ -81,10 +104,13 @@ export class EsriMap1 extends Component {
                     }
                 >
                 </EsriLoaderReact>
-                {this.mapView && <Identify/>}
+                {mapView && <Identify/>}
+                {searchResults.length > 0
+                &&
                 <Graphics
-                    graphics={searchResults}
-                />
+                    graphics={this.formatGraphics(searchResults)}
+                    graphicsLayer='searchGraphics'
+                />}
             </div>
         )
     }

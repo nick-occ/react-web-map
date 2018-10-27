@@ -3,7 +3,10 @@ import {
     SET_VISIBILITY,
     SET_TOKEN,
     SET_CONFIG,
-    SEARCH_GRAPHICS,
+    GRAPHICS,
+    CLEAR_GRAPHICS,
+    IDENTIFY_RESULT,
+    CLEAR_IDENTIFY_RESULT,
     CLEAR_SEARCH_RESULTS,
     SEARCH_RESULTS,
     SET_CENTER,
@@ -64,7 +67,7 @@ export const getSearchResults = (term, longitude, latitude) => {
             latitude
         })
             .then((res) => {
-                dispatch(clearSearchGraphics());
+                dispatch(clearSearchResults());
                 dispatch(setSearchResults(res.data.businesses));
             })
             .catch((err) => console.error(err));
@@ -78,16 +81,17 @@ export const setSearchResults = (results) => {
     }
 };
 
-export const clearSearchGraphics = () => {
+export const clearSearchResults = () => {
     return {
-        type: CLEAR_SEARCH_RESULTS,
+        type: CLEAR_SEARCH_RESULTS
     }
 };
 
-export const setSearchGraphics = (results) => {
+export const setGraphics = (results, graphicsLayer) => {
     return {
-        type: SEARCH_GRAPHICS,
-        results
+        type: GRAPHICS,
+        results,
+        graphicsLayer
     }
 };
 

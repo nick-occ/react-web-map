@@ -71,4 +71,4 @@ export const formatSearchGraphics = (state) => {
             attributes: _.pick(result, ['location','name','phone'])
         }
     });
-}
+};
