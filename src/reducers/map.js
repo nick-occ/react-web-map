@@ -4,7 +4,7 @@ const mapReducerDefaultState = {
     mapView: null,
     config: {},
     layerData: {},
-    searchResults: []
+    searchResults: [],
 };
 
 export default (state = mapReducerDefaultState, action) => {
@@ -37,15 +37,15 @@ export default (state = mapReducerDefaultState, action) => {
           return {...state, searchResults: action.results};
       case 'CLEAR_SEARCH_RESULTS':
           return {...state, searchResults: []};
-      case 'SEARCH_GRAPHICS':
-          const setSearchState = Object.assign({}, state);
-          setSearchState.mapView.map['allLayers'].items.forEach((item) => {
-              if (item['id'] === 'searchGraphics') {
+      case 'GRAPHICS':
+          const setGraphicsState = Object.assign({}, state);
+          setGraphicsState.mapView.map['allLayers'].items.forEach((item) => {
+              if(item['id'] === action.graphicsLayer) {
                   item.removeAll();
-                  item.addMany(action.results);
+                  item.addMany(action.results)
               }
           });
-          return setSearchState;
+          return setGraphicsState;
       case 'SET_CENTER':
           const setCenterState = Object.assign({}, state);
           setCenterState.mapView.center = action.coords;
