@@ -4,7 +4,6 @@ import _ from 'lodash';
 import jwt from "jsonwebtoken";
 import EsriLoaderReact from 'esri-loader-react';
 import Graphics from '../components/Graphics';
-import {getSearchGraphics} from "../selectors/map";
 
 import {setMapProps} from '../actions/map';
 
@@ -78,8 +77,7 @@ export class EsriMap1 extends Component {
 
                             //graphics for searching
                             const searchGraphics = new GraphicsLayer({
-                                id: 'searchGraphics',
-                                opacity: .3
+                                id: 'searchGraphics'
                             });
 
                             const identifyGraphics = new GraphicsLayer({
