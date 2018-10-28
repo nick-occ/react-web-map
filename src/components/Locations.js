@@ -5,7 +5,6 @@ const Locations = (props) => {
     return (
         <div>
             <div className="location-header">
-                <h3 className="location-header__heading">Results</h3>
                 {
                     props.businesses.map((business) => (
                         <Location
