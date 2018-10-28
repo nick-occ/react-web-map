@@ -1,5 +1,5 @@
 .header {
-  background: $dark-blue;
+  background-color: $dark-blue;
   color: $white;
   display: flex;
   flex-direction: row;
@@ -20,4 +20,16 @@
   border-radius: 1rem;
   outline: none;
   padding-left: .5rem;
+}
+
+.btn {
+  background: $dark-blue;
+  border: none;
+  color: $white;
+}
+
+@media(max-width: 575.98px) {
+  .header__items {
+    flex-direction: column;
+  }
 }
