@@ -13,7 +13,7 @@ export class Location extends Component {
     //click event for location card
     handleClick(data) {
         //set mapView to location clicked
-        this.props.setCenter([data.coordinates.longitude, data.coordinates.latitude]);
+        this.props.setCenter([data.coordinates.longitude, data.coordinates.latitude],20);
     }
 
     render() {
@@ -77,7 +77,7 @@ export class Location extends Component {
 const mapDispatchToProps = (dispatch) => {
     return {
         setMapProps: (map) => dispatch(setMapProps(map)),
-        setCenter: (coords) => dispatch(setCenter(coords)),
+        setCenter: (coords, zoom) => dispatch(setCenter(coords, zoom)),
     };
 };
 

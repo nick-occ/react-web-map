@@ -4,9 +4,6 @@ import {
     SET_TOKEN,
     SET_CONFIG,
     GRAPHICS,
-    CLEAR_GRAPHICS,
-    IDENTIFY_RESULT,
-    CLEAR_IDENTIFY_RESULT,
     CLEAR_SEARCH_RESULTS,
     SEARCH_RESULTS,
     SET_CENTER,
@@ -95,10 +92,11 @@ export const setGraphics = (results, graphicsLayer) => {
     }
 };
 
-export const setCenter = (coords) => {
+export const setCenter = (coords, zoom=-1) => {
     return {
         type: SET_CENTER,
-        coords
+        coords,
+        zoom
     }
 };
 

@@ -49,6 +49,9 @@ export default (state = mapReducerDefaultState, action) => {
       case 'SET_CENTER':
           const setCenterState = Object.assign({}, state);
           setCenterState.mapView.center = action.coords;
+          if(action.zoom > -1) {
+               setCenterState.mapView.zoom = action.zoom;
+          }
           return setCenterState;
       case 'LAYER_DATA':
           return {...state, layerData: action.layerData};
