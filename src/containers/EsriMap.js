@@ -9,7 +9,7 @@ import {setMapProps} from '../actions/map';
 
 import Identify from './Identify';
 
-export class EsriMap1 extends Component {
+export class EsriMap extends Component {
 
     constructor() {
         super();
@@ -126,4 +126,4 @@ const mapStateToProps = state => {
     return { map: state.map };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(EsriMap1);
+export default connect(mapStateToProps, mapDispatchToProps)(EsriMap);

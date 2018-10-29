@@ -1,7 +1,7 @@
 import React , {Component} from 'react';
 import { connect } from 'react-redux';
 
-import EsriMap1 from './EsriMap1';
+import EsriMap from './EsriMap';
 import Header from '../components/Header';
 import Legend from './Legend';
 import SidePanel from '../components/SidePanel';
@@ -33,7 +33,7 @@ class Home extends Component {
                   title={getConfig(this.props.map)['name']}
               />
               <div id={'map-frame'}>
-                  <EsriMap1/>
+                  <EsriMap/>
                   <SidePanel
                       searchResults={getSearchResults(this.props.map)}
                       searchGraphics={getSearchGraphics(this.props.map)}
