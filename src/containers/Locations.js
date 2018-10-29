@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import Location from '../containers/Location';
-import {clearSearchResults} from "../actions/map";
+import Location from './Location';
+import {clearSearchResults, clearGraphics} from "../actions/map";
 
 export class Locations extends Component {
     constructor(props) {
@@ -11,6 +11,7 @@ export class Locations extends Component {
 
     handleClick() {
         this.props.clearSearchResults();
+        this.props.clearGraphics('searchGraphics');
     }
 
     render() {
@@ -38,7 +39,8 @@ export class Locations extends Component {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        clearSearchResults: () => dispatch(clearSearchResults())
+        clearSearchResults: () => dispatch(clearSearchResults()),
+        clearGraphics: (graphicsLayer) => dispatch(clearGraphics(graphicsLayer))
     };
 };
 

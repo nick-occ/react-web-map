@@ -4,6 +4,7 @@ import {
     SET_TOKEN,
     SET_CONFIG,
     GRAPHICS,
+    CLEAR_GRAPHICS,
     CLEAR_SEARCH_RESULTS,
     SEARCH_RESULTS,
     SET_CENTER,
@@ -88,6 +89,13 @@ export const setGraphics = (results, graphicsLayer) => {
     return {
         type: GRAPHICS,
         results,
+        graphicsLayer
+    }
+};
+
+export const clearGraphics = (graphicsLayer) => {
+    return {
+        type: CLEAR_GRAPHICS,
         graphicsLayer
     }
 };

@@ -46,6 +46,14 @@ export default (state = mapReducerDefaultState, action) => {
               }
           });
           return setGraphicsState;
+      case 'CLEAR_GRAPHICS':
+          const clearGraphicsState = Object.assign({}, state);
+          clearGraphicsState.mapView.map['allLayers'].items.forEach((item) => {
+              if(item['id'] === action.graphicsLayer) {
+                  item.removeAll();
+              }
+          });
+          return clearGraphicsState;
       case 'SET_CENTER':
           const setCenterState = Object.assign({}, state);
           setCenterState.mapView.center = action.coords;
